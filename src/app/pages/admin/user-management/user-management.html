@@ -86,18 +86,22 @@
           <div class="section-title text-primary">Informations de base</div>
 
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" [(ngModel)]="newUser().userName" placeholder="User" [disabled]="isEditMode()">
+            <input type="text" class="form-control"
+                   [(ngModel)]="newUser().userName"
+                   placeholder="User"
+                   [disabled]="isEditMode()">
             <label>Nom d'utilisateur</label>
           </div>
 
+          <!-- ✅ pattern supprimé — utilisation de email validator Angular natif -->
           <div class="form-floating mb-3">
             <input type="email"
-                  class="form-control"
-                  [(ngModel)]="newUser().email"
-                  #emailField="ngModel"
-                  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                  placeholder="Email"
-                  [class.is-invalid]="emailField.invalid && emailField.touched">
+                   class="form-control"
+                   [(ngModel)]="newUser().email"
+                   #emailField="ngModel"
+                   email
+                   placeholder="Email"
+                   [class.is-invalid]="emailField.invalid && emailField.touched">
             <label>Email Professionnel</label>
             @if (emailField.invalid && emailField.touched) {
               <div class="invalid-feedback animate-fade-in">
@@ -112,14 +116,11 @@
                 <input type="text"
                        class="form-control"
                        [(ngModel)]="newUser().firstName"
-                       #fNameField="ngModel"
                        placeholder="Prénom"
                        [class.is-invalid]="newUser().firstName && !isNameValid(newUser().firstName)">
                 <label>Prénom</label>
                 @if (newUser().firstName && !isNameValid(newUser().firstName)) {
-                  <div class="text-danger small mt-1 animate-fade-in">
-                    Lettres uniquement.
-                  </div>
+                  <div class="text-danger small mt-1 animate-fade-in">Lettres uniquement.</div>
                 }
               </div>
             </div>
@@ -128,14 +129,11 @@
                 <input type="text"
                        class="form-control"
                        [(ngModel)]="newUser().lastName"
-                       #lNameField="ngModel"
                        placeholder="Nom"
                        [class.is-invalid]="newUser().lastName && !isNameValid(newUser().lastName)">
                 <label>Nom</label>
                 @if (newUser().lastName && !isNameValid(newUser().lastName)) {
-                  <div class="text-danger small mt-1 animate-fade-in">
-                    Lettres uniquement.
-                  </div>
+                  <div class="text-danger small mt-1 animate-fade-in">Lettres uniquement.</div>
                 }
               </div>
             </div>
@@ -145,7 +143,9 @@
 
           <div class="form-group mb-3">
             <label class="small fw-bold text-muted mb-1">Site d'affectation</label>
-            <select class="form-select form-select-lg" [(ngModel)]="newUser().siteName" name="siteName">
+            <select class="form-select form-select-lg"
+                    [(ngModel)]="newUser().siteName"
+                    name="siteName">
               <option value="">Sélectionnez un site</option>
               @for (site of sites(); track site.siteName) {
                 <option [value]="site.siteName">{{ site.siteName }}</option>
@@ -181,15 +181,22 @@
             }
           </div>
 
-          <button type="button" class="btn btn-success w-100 py-3 fw-bold shadow-sm"
+          <button type="button"
+                  class="btn btn-success w-100 py-3 fw-bold shadow-sm"
                   (click)="saveUser()"
-                  [disabled]="!newUser().userName || !newUser().roleName || !isEmailValid(newUser().email) || !isNameValid(newUser().firstName) || !isNameValid(newUser().lastName) || isLoading()">
+                  [disabled]="!newUser().userName
+                           || !newUser().roleName
+                           || !isEmailValid(newUser().email)
+                           || !isNameValid(newUser().firstName)
+                           || !isNameValid(newUser().lastName)
+                           || isLoading()">
             @if (isLoading()) {
               <span class="spinner-border spinner-border-sm me-2"></span> Traitement...
             } @else {
               {{ isEditMode() ? 'Mettre à jour le profil' : 'Finaliser la création' }}
             }
           </button>
+
         </div>
       </div>
     </div>
